@@ -25,7 +25,6 @@ describe('testa o componente About', () => {
 
     expect(firstParagraph).toBeInTheDocument();
     expect(secondParagraph).toBeInTheDocument();
-    expect(Object.keys(paragraphsContent)).toHaveLength(2);
   });
   it('testa se a pagina contem imagem  de Pokedex', () => {
     render(<About />);
