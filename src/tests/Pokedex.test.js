@@ -2,16 +2,12 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './renderWithRouter';
-import Pokedex from '../components/Pokedex';
+import App from '../App';
 import pokemons from '../data';
-import { isPokemonFavoriteByIdType } from '../types';
 
 describe('testa componente Pokedex', () => {
   it('testa se página contém um heading h2 com o texto Encountered pokémons', () => {
-    renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ isPokemonFavoriteByIdType }
-    />);
+    renderWithRouter(<App />);
 
     const heading = screen.getByRole('heading', {
       name: 'Encountered pokémons',
@@ -21,10 +17,7 @@ describe('testa componente Pokedex', () => {
     expect(heading).toBeInTheDocument();
   });
   it('testa se é exibido o próximo Pokémon da lista quando o botão é clicado', () => {
-    renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ isPokemonFavoriteByIdType }
-    />);
+    renderWithRouter(<App />);
 
     const nextPokemonButton = screen.getByRole('button', { name: 'Próximo pokémon' });
     const firstPokemon = screen.queryByText('Pikachu');
@@ -37,10 +30,7 @@ describe('testa componente Pokedex', () => {
     expect(secondPokemon).toBeInTheDocument();
   });
   it('testa se é mostrado apenas um Pokémon por vez', () => {
-    renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ isPokemonFavoriteByIdType }
-    />);
+    renderWithRouter(<App />);
 
     const firstPokemon = screen.queryByText('Pikachu');
     const secondPokemon = screen.queryByText('Charmander');
@@ -51,10 +41,7 @@ describe('testa componente Pokedex', () => {
     expect(moreDetailsLink).toHaveLength(1);
   });
   it('testa se a Pokédex tem os botões de filtro', () => {
-    renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ isPokemonFavoriteByIdType }
-    />);
+    renderWithRouter(<App />);
     const firePokemons = ['Charmander', 'Rapidash'];
     const filterButtonsTotalNumber = 7;
     const pokemonTypesNames = ['Electric',
@@ -83,10 +70,7 @@ describe('testa componente Pokedex', () => {
     expect(allPokemonsButton).toBeInTheDocument();
   });
   it('testa se a Pokédex contém um botão para resetar o filtro', () => {
-    renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ isPokemonFavoriteByIdType }
-    />);
+    renderWithRouter(<App />);
 
     const expectedPokemonNameOrder = pokemons.filter(({ name }) => name !== 'Pikachu');
     const allPokemonsButton = screen.getByRole('button', { name: 'All' });
