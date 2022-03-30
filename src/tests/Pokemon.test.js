@@ -55,7 +55,7 @@ describe('testa o componente Pokemon', () => {
       const { pathname } = history.location;
       expect(pathname).toBe(expectPathname);
     });
-  it('Teste se existe um ícone de estrela nos Pokémons favoritados', () => {
+  it('Teste se existe um ícone de estrela nos Pokémons favoritado', () => {
     const pokemonTest = pokemons[0];
     const { history } = renderWithRouter(<App />);
 
