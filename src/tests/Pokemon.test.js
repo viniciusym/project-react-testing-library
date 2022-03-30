@@ -4,12 +4,13 @@ import userEvent from '@testing-library/user-event';
 import renderWithRouter from './renderWithRouter';
 import App from '../App';
 import pokemons from '../data';
-import { isPokemonFavoriteByIdType } from '../types';
+
+const moreDetailsLinkName = 'More details';
 
 describe('testa o componente Pokemon', () => {
   it('testa se é renderizado um card com as informações de determinado pokémon', () => {
     const pokemonTest = pokemons[0];
-    const { history } = renderWithRouter(<App />);
+    renderWithRouter(<App />);
 
     const pokemonName = screen.getByText(pokemonTest.name);
     expect(pokemonName).toBeInTheDocument();
@@ -30,9 +31,37 @@ describe('testa o componente Pokemon', () => {
     const pokemonImage = screen.getByAltText(expectedAltText);
     expect(pokemonImage).toHaveAttribute('src', expectedImgSrc);
     expect(pokemonImage).toHaveAttribute('alt', expectedAltText);
+  });
+  it('Teste o componente contém um link de navegação para exibir detalhes deste Pokémon',
+    () => {
+      const pokemonTest = pokemons[0];
+      renderWithRouter(<App />);
 
-    const moreDetailsLink = screen.getByRole('link', { name: 'More details' });
-    const expectPathname = '/pokemons/25';
+      const moreDetailsLink = screen.getByRole('link', { name: moreDetailsLinkName });
+      const expectPathname = `/pokemons/${pokemonTest.id}`;
+      expect(moreDetailsLink).toHaveAttribute('href', expectPathname);
+      expect(moreDetailsLink).toBeInTheDocument();
+    });
+  it('testa se ao clicar no link de detalhes é feito o redirecionamento da aplicação',
+    () => {
+      const pokemonTest = pokemons[0];
+      const { history } = renderWithRouter(<App />);
+
+      const moreDetailsLink = screen.getByRole('link', { name: moreDetailsLinkName });
+      const expectPathname = `/pokemons/${pokemonTest.id}`;
+      expect(moreDetailsLink).toHaveAttribute('href', expectPathname);
+      expect(moreDetailsLink).toBeInTheDocument();
+      userEvent.click(moreDetailsLink);
+      const { pathname } = history.location;
+      expect(pathname).toBe(expectPathname);
+    });
+  it('Teste se existe um ícone de estrela nos Pokémons favoritados', () => {
+    const pokemonTest = pokemons[0];
+    const { history } = renderWithRouter(<App />);
+
+    const moreDetailsLink = screen.getByRole('link', { name: moreDetailsLinkName });
+    const expectPathname = `/pokemons/${pokemonTest.id}`;
+    expect(moreDetailsLink).toHaveAttribute('href', expectPathname);
     expect(moreDetailsLink).toBeInTheDocument();
     userEvent.click(moreDetailsLink);
     const { pathname } = history.location;
